@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import type { Activity } from "@/lib/day-companion";
 import { formatTime } from "@/lib/day-companion";
+import { ActivityIcon } from "./ActivityIcon";
 
 type ScheduleEditorProps = {
   activities: Activity[];
@@ -68,7 +69,7 @@ export function ScheduleEditor({ activities, onChange, onSave }: ScheduleEditorP
                     <p className="font-bold">{formatTime(activity.time)}</p>
                     <p className="text-xs text-muted-foreground">{activity.duration} min</p>
                   </div>
-                  <span className="text-xl" aria-hidden="true">{activity.icon}</span>
+                  <span className="text-primary"><ActivityIcon name={activity.name} className="size-5" /></span>
                   <p className="min-w-0 flex-1 font-semibold">{activity.name}</p>
                   <Button variant="ghost" size="iconTouch" aria-label={`Edit ${activity.name}`} onClick={() => setEditingId(activity.id)}><Pencil aria-hidden="true" /></Button>
                   <Button variant="ghost" size="iconTouch" aria-label={`Remove ${activity.name}`} onClick={() => onChange(activities.filter((item) => item.id !== activity.id))}><Trash2 aria-hidden="true" /></Button>

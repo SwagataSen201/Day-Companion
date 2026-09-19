@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { AppShell, type AppView } from "@/components/day-companion/AppShell";
 import { CatNote } from "@/components/day-companion/CatNote";
 import { ScheduleEditor } from "@/components/day-companion/ScheduleEditor";
+import { ActivityIcon } from "@/components/day-companion/ActivityIcon";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
@@ -206,7 +207,7 @@ function ActiveStage({ current, next, onWorking }: { current: Activity; next: Ac
       <div className="rounded-lg border bg-card p-5 shadow-soft">
         <p className="text-xs font-extrabold uppercase text-primary">Now</p>
         <div className="mt-4 flex items-center gap-4">
-          <div className="grid size-16 shrink-0 place-items-center rounded-lg bg-highlight text-3xl" aria-hidden="true">{current.icon}</div>
+          <div className="grid size-16 shrink-0 place-items-center rounded-lg bg-highlight text-primary"><ActivityIcon name={current.name} className="size-8" /></div>
           <div>
             <h2 className="font-display text-3xl font-bold">{current.name}</h2>
             <p className="mt-1 text-sm text-muted-foreground">{formatTime(current.time)} – {formatTime(endTime(current.time, current.duration))}</p>
@@ -229,7 +230,7 @@ function ActiveStage({ current, next, onWorking }: { current: Activity; next: Ac
 function NextActivity({ activity }: { activity: Activity }) {
   return (
     <div className="flex items-center gap-4 rounded-lg border bg-card p-4">
-      <div className="grid size-12 place-items-center rounded-lg bg-secondary text-2xl" aria-hidden="true">{activity.icon}</div>
+      <div className="grid size-12 place-items-center rounded-lg bg-secondary text-primary"><ActivityIcon name={activity.name} /></div>
       <div className="flex-1">
         <p className="text-xs font-extrabold uppercase text-muted-foreground">Next</p>
         <h2 className="text-lg font-bold">{activity.name}</h2>

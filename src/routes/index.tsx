@@ -20,6 +20,9 @@ import {
 
 type Stage = "welcome" | "active" | "transition" | "ready" | "timeup" | "reward";
 
+const fallbackCurrent: Activity = { id: -1, time: "09:30", name: "Study", duration: 60, icon: "📚" };
+const fallbackNext: Activity = { id: -2, time: "10:30", name: "Break", duration: 30, icon: "🍵" };
+
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
@@ -45,8 +48,8 @@ function DayCompanion() {
   const [transitionTasks, setTransitionTasks] = useState([false, false, false]);
   const stageHeadingRef = useRef<HTMLHeadingElement>(null);
 
-  const current = activities[currentIndex] ?? sampleActivities[3];
-  const next = activities[currentIndex + 1] ?? activities[0] ?? sampleActivities[4];
+  const current = activities[currentIndex] ?? fallbackCurrent;
+  const next = activities[currentIndex + 1] ?? activities[0] ?? fallbackNext;
 
   useEffect(() => {
     if (stage !== "welcome") stageHeadingRef.current?.focus();
@@ -252,7 +255,7 @@ function TransitionStage({ stage, next, transitionTasks, onTaskChange, onStageCh
         <div className="mt-4 space-y-2">
           {prompts.map((prompt, index) => (
             <label key={prompt} className="flex min-h-12 cursor-pointer items-center gap-3 rounded-md px-2 hover:bg-muted">
-              <Checkbox checked={transitionTasks[index]} onCheckedChange={(checked) => onTaskChange(index, checked === true)} className="size-6" />
+              <Checkbox checked={transitionTasks[index] ?? false} onCheckedChange={(checked) => onTaskChange(index, checked === true)} className="size-6" />
               <span className={transitionTasks[index] ? "text-muted-foreground line-through" : "font-semibold"}>{prompt}</span>
             </label>
           ))}

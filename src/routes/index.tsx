@@ -1,7 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Bell, Check, ChevronRight, Clock3, FastForward, RotateCcw } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-import ogImageAsset from "@/assets/og-home.jpg.asset.json";
 import { AppShell, type AppView } from "@/components/day-companion/AppShell";
 import { CatNote } from "@/components/day-companion/CatNote";
 import { ScheduleEditor } from "@/components/day-companion/ScheduleEditor";
@@ -33,9 +32,7 @@ export const Route = createFileRoute("/")({
       { property: "og:title", content: "Day Companion — Know what comes next" },
       { property: "og:description", content: "A warm, calm way to see what to do now, what comes next, and move through your day." },
       { property: "og:type", content: "website" },
-      { property: "og:image", content: `https://gentle-day-pilot.lovable.app${ogImageAsset.url}` },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:image", content: `https://gentle-day-pilot.lovable.app${ogImageAsset.url}` },
     ],
   }),
   component: DayCompanion,

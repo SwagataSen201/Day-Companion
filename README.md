@@ -96,3 +96,16 @@ Complete / Continue / Skip
       +2 ⭐
        ↓
  Next Activity
+```
+
+## License & Attribution
+
+Day Companion is licensed under the **GNU General Public License v3.0 (GPL-3.0)**.
+
+The source code, product concept, design, product-thinking work, implementation, and other original materials in this repository are my own work unless otherwise stated.
+
+This project was independently developed and informed by accessibility guidance and standards published by the **World Wide Web Consortium (W3C)**, particularly the **Web Content Accessibility Guidelines (WCAG)**.
+
+The referenced W3C guidelines and standards are not covered by this project's GPL-3.0 license.
+
+See the [`LICENSE`](./LICENSE) file for the complete license terms.

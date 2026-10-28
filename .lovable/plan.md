@@ -22,13 +22,15 @@ Add a **"Help me start"** outline button inside the existing NOW card (below the
 - No changes to schedule, rewards, demo, or audio.
 
 ### Phase 2 — My Day Changed
-- `src/lib/day-companion.ts`: extend `getScheduleState` with an optional `shifts: Record<number, number>` (minutes added to an activity's **start and end**) — same pattern as the existing `extensions`. Add suggestion text builders.
-- `src/routes/index.tsx`: new `shifts` state (cleared by Reset demo); secondary **"My day changed"** action on the NOW screen opens a new component.
-- New `src/components/day-companion/MyDayChanged.tsx`: three options, each showing a concrete suggestion **before** anything changes, with Accept / Dismiss:
-  1. **I'm running late** → shows the current + next activity with proposed new times (+20 min shift applied to the current activity and every later one). Accept applies those shifts; original times are never mutated — dismissing or Reset restores instantly.
-  2. **I need a break** → offers a 15-minute pause: shows the next activity's current and proposed start time. Accept shifts only the next activity.
-  3. **This task is taking longer** → reuses the existing Continue-10-minutes mechanic (extension on the focus activity) and shows what's next.
-- Explicit confirm required for every change; no silent edits, no guilt language. Works with Demo Mode because all times are computed from `now` + state.
+- `src/lib/day-companion.ts`: extend `getScheduleState` with an optional `shifts: Record<number, number>` (minutes added to an activity's start **and** end) — same pattern as the existing `extensions`; a slot's start becomes `toMinutes(time) + shift` and its end `start + duration + extension`, so Continue extensions are respected automatically. Add pure planner helpers that compute the proposed shifts from the existing inputs; no second extension mechanism.
+- `src/routes/index.tsx`: new `shifts` state, cleared by Reset demo together with `resolvedIds`/`extensions`; secondary **"My day changed"** action on the NOW screen opens a new component.
+- New `src/components/day-companion/MyDayChanged.tsx`: three options, each showing a preview **before** anything changes, with Accept / Dismiss:
+  1. **I'm running late** → the current activity keeps its original start and end times and stays in NOW; the shift starts at the current activity's effective end (scheduled end plus any Continue extension) and applies +20 minutes to every later, unresolved activity. Preview lists each affected activity with current → proposed times.
+  2. **I need a break** → proposes a 15-minute pause by shifting the next unresolved activity and every subsequent unresolved activity by +15 minutes, so no unintended overlaps are created. Preview lists affected activities with current → proposed times.
+  3. **This task is taking longer** → reuses the existing Continue-10-minutes mechanic (writes the same `extensions` entry the Time-up Continue button writes) and shows what's next.
+- Accept applies only the confirmed shifts; the original `activities` definitions are never mutated. Resolved activities are never shifted, chronological ordering is preserved (shifts are uniform and forward-only), and dismissing leaves the schedule and current stage unchanged.
+- Midnight safety: if a proposal would push any affected activity past 23:59, it is shown as not applicable (e.g. "Exercise would run past midnight, so this can't be applied") and the schedule stays unchanged — no modulo-24-hour wrapping and no date-aware scheduling engine.
+- Works with Demo Mode because all times are computed from `now` + state.
 
 ### Phase 3 — Today's Priorities
 - `src/routes/index.tsx`: new `priorities: string[]` state (max 3).

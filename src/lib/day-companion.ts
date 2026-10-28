@@ -19,6 +19,23 @@ export const sampleActivities: Activity[] = [
   { id: 10, time: "22:30", name: "Wind down", duration: 30, icon: "🌙" },
 ];
 
+const firstStepSuggestions: Record<string, string> = {
+  "Wake up": "Sit up slowly and open the curtains to let the light in.",
+  "Get ready": "Gather the items you need before leaving.",
+  Breakfast: "Pour a glass of water and take the first bite.",
+  Study: "Open your study material and read the first page.",
+  Break: "Stand up, stretch, and fill your water glass.",
+  Lunch: "Decide what you'll eat, then get it ready.",
+  Exercise: "Put on your workout clothes.",
+  Dinner: "Decide what you'll eat, then get it ready.",
+  "Wind down": "Put your phone away and dim the lights.",
+};
+
+/** One small, concrete first step to make an activity feel easier to begin. */
+export function firstStepFor(name: string) {
+  return firstStepSuggestions[name] ?? "Gather what you need, then take the first small step.";
+}
+
 export function toMinutes(time: string) {
   const [rawHour = "0", rawMinute = "0"] = time.split(":");
   return Number(rawHour) * 60 + Number(rawMinute);

@@ -45,11 +45,11 @@ No unit-test suite exists in the project, so verification is browser-based (Play
 
 Phase-specific checks:
 - **P1:** correct suggestion for Study; generic fallback for an unsuggested name (added via Prepare Tomorrow); Back returns to normal card; stars, schedule, and stage unchanged.
-- **P2:** each of the three options shows its suggestion; Dismiss leaves schedule and demo state untouched; Accept applies only the confirmed shift and the new times show on screen; Reset demo clears shifts; progression still works.
+- **P2:** each of the three options shows its preview; Dismiss leaves schedule, stage, and demo state untouched; Accept applies only the confirmed shift and the new times show on screen; after a late/break shift the current activity's name and original times remain visible in NOW; the running-late preview covers only unresolved activities starting at/after the current activity's effective end, respecting a Continue extension when one exists; no proposed times overlap or cross midnight, and a would-cross-midnight proposal is refused with an explanation while the schedule stays unchanged; resolved activities are never shifted; Reset demo clears shifts; progression still works.
 - **P3:** add up to 3, blocked at 3 (input disabled with clear message), remove works, empty state reads "Optional — what matters most today?"; schedule and NOW layout unaffected.
 
 ## 6. Assumptions & limitations
-- Times stay time-of-day based (no cross-midnight scheduling); shifts therefore also work near midnight only modulo 24 h — acceptable for the prototype.
+- Times stay time-of-day based (no cross-midnight scheduling); a shift that would run an activity past midnight is refused with an explanation instead of wrapping — no modulo math and no date-aware engine.
 - Shifts apply forward from the moment of acceptance; activities already completed are untouched.
 - No persistence: priorities, shifts, and resolutions reset on reload — matching the existing prototype behavior.
 - Phase 2 "running late" shifts are a prototype-grade adjustment, not a rescheduling engine.

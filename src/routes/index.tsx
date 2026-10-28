@@ -13,6 +13,7 @@ import { Switch } from "@/components/ui/switch";
 import { useNow } from "@/hooks/use-now";
 import {
   endTime,
+  firstStepFor,
   formatClock,
   formatDayLabel,
   formatTime,
@@ -267,6 +268,9 @@ type ActiveStageProps = {
 };
 
 function ActiveStage({ current, next, remainingMinutes, progress, onWorking }: ActiveStageProps) {
+  const [startHelpId, setStartHelpId] = useState<number | null>(null);
+  const helpOpen = current !== null && startHelpId === current.activity.id;
+
   return (
     <div className="space-y-4">
       <div className="rounded-lg border bg-card p-5 shadow-soft">
@@ -280,11 +284,22 @@ function ActiveStage({ current, next, remainingMinutes, progress, onWorking }: A
                 <p className="mt-1 text-sm text-muted-foreground">{formatTime(current.activity.time)} – {formatTime(endTime(current.activity.time, current.activity.duration))}</p>
               </div>
             </div>
-            <div className="mt-6 flex items-center justify-between text-sm">
-              <span className="flex items-center gap-2 font-bold"><Clock3 className="size-4" aria-hidden="true" /> {remainingMinutes ?? 0} min remaining</span>
-              <span className="text-muted-foreground">{progress}%</span>
-            </div>
-            <Progress value={progress} className="mt-3 h-2.5" aria-label={`${progress} percent of the activity complete`} />
+            {helpOpen ? (
+              <div className="mt-5 rounded-lg bg-secondary px-4 py-4" role="status">
+                <p className="text-xs font-extrabold uppercase text-primary">First step</p>
+                <p className="mt-2 text-lg font-semibold leading-7">{firstStepFor(current.activity.name)}</p>
+                <Button variant="ghost" size="sm" className="-ml-2 mt-2" onClick={() => setStartHelpId(null)}>Back</Button>
+              </div>
+            ) : (
+              <>
+                <div className="mt-6 flex items-center justify-between text-sm">
+                  <span className="flex items-center gap-2 font-bold"><Clock3 className="size-4" aria-hidden="true" /> {remainingMinutes ?? 0} min remaining</span>
+                  <span className="text-muted-foreground">{progress}%</span>
+                </div>
+                <Progress value={progress} className="mt-3 h-2.5" aria-label={`${progress} percent of the activity complete`} />
+                <Button variant="outline" className="mt-4 w-full" onClick={() => setStartHelpId(current.activity.id)}>Help me start</Button>
+              </>
+            )}
           </>
         ) : (
           <div className="mt-4 flex items-center gap-4">

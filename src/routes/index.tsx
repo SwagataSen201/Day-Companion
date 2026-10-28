@@ -13,6 +13,7 @@ import { Switch } from "@/components/ui/switch";
 import { useNow } from "@/hooks/use-now";
 import {
   endTime,
+  firstStepFor,
   formatClock,
   formatDayLabel,
   formatTime,
